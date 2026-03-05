@@ -1,14 +1,16 @@
 # Windows Terminal Configuration
 
-A clean and modern Windows Terminal setup for a beautiful and productive CLI experience.
+A clean and modern Windows Terminal setup for a beautiful and productive CLI experience, heavily inspired by the Gruvbox aesthetic.
+
+![Screenshot](assets/screenshot.png)
 
 ## Features
 
-- 🎨 Custom Oh My Posh theme with a sleek prompt
+- 🎨 Custom Gruvbox-style Oh My Posh theme (`gruvbox-slick.omp.json`)
 - ⚡ Fast directory navigation with Zoxide
 - 💄 Colorful file icons with Terminal-Icons
-- 🖼️ System info display with Fastfetch
-- 💎 Optional WezTerm configuration with GPU acceleration
+- 🖼️ System info display with Fastfetch (custom Gruvbox config)
+- 💎 Advanced WezTerm configuration with GPU acceleration and custom styling
 - 🌈 Nerd Font support for enhanced visuals
 
 ## 
@@ -18,11 +20,15 @@ A clean and modern Windows Terminal setup for a beautiful and productive CLI exp
 
 ```
 windows-terminal-config/
+├── .wezterm.lua                      # WezTerm config
 ├── Microsoft.PowerShell_profile.ps1  # PowerShell config
-├── config.jsonc                      # Fastfetch config
-├── .wezterm.lua                      # WezTerm config (optional)
-|-- settings.json
-└── README.md
+├── settings.json                     # Windows Terminal settings
+├── assets/                           # Project assets (screenshots, etc.)
+├── fastfetch/                        # Fastfetch configuration files
+│   ├── ascii.txt
+│   └── config.jsonc
+└── oh-my-posh/                       # Oh My Posh themes
+    └── gruvbox-slick.omp.json
 ```
 
 ## Prerequisites
@@ -33,7 +39,7 @@ windows-terminal-config/
 - [Zoxide](https://github.com/ajeetdsouza/zoxide)
 - [Terminal-Icons](https://github.com/devblackops/Terminal-Icons)
 - [Fastfetch](https://github.com/fastfetch-cli/fastfetch)
-- [FiraCode Nerd Font](https://www.nerdfonts.com/font-downloads) (recommended)
+- [JetBrainsMono Nerd Font](https://www.nerdfonts.com/font-downloads) (recommended)
 - [WezTerm](https://wezfurlong.org/wezterm/install/) (optional)
 
 ## Installation
@@ -67,54 +73,41 @@ Copy the PowerShell profile to your profile location:
 
 ```powershell
 # Check your profile path
-echo $PROFILE
+$PROFILE
 
 # Copy the profile
 Copy-Item Microsoft.PowerShell_profile.ps1 $PROFILE
 ```
 
-Or manually copy the contents:
+### 4. Set Up Configurations
+
+Move the configuration files to their respective locations:
 
 ```powershell
-notepad $PROFILE
-```
+# Fastfetch
+New-Item -ItemType Directory -Path "$HOME\.config\fastfetch" -Force
+Copy-Item fastfetch\* "$HOME\.config\fastfetch\" -Recurse
 
-### 4. Set Up WezTerm (Optional)
+# Oh My Posh
+New-Item -ItemType Directory -Path "$HOME\.config\oh-my-posh" -Force
+Copy-Item oh-my-posh\* "$HOME\.config\oh-my-posh\" -Recurse
 
-If using WezTerm, copy the configuration file:
-
-```powershell
-Copy-Item .wezterm.lua $HOME\.wezterm.lua
+# WezTerm (Optional)
+Copy-Item .wezterm.lua "$HOME\.wezterm.lua"
 ```
 
 ### 5. Install Nerd Font
 
-Download and install [FiraCode Nerd Font](https://www.nerdfonts.com/font-downloads), then set it as your terminal font in Windows Terminal or WezTerm settings.
+Download and install [JetBrainsMono Nerd Font](https://www.nerdfonts.com/font-downloads), then set it as your terminal font in Windows Terminal or WezTerm settings.
 
 ## Usage
 
 After installation, restart your terminal. You should see:
 
 - Fastfetch system information on startup
-- A custom Oh My Posh prompt
+- A custom Gruvbox-themed Oh My Posh prompt
 - Colorful file icons when listing directories
 - Fast directory jumping with `z` command
-
-### Quick Commands
-
-```powershell
-# Jump to a directory you've visited before
-z documents
-
-# List directory with icons
-ls
-```
-
-## Customization
-
-- Edit `Microsoft.PowerShell_profile.ps1` to modify your shell behavior
-- Modify `.wezterm.lua` for WezTerm-specific settings
-- Configure Fastfetch by creating `~/.config/fastfetch/config.jsonc`
 
 ## Troubleshooting
 
