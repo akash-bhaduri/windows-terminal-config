@@ -6,15 +6,12 @@ A clean and modern Windows Terminal setup for a beautiful and productive CLI exp
 
 ## Features
 
-- 🎨 Custom Gruvbox-style Oh My Posh theme (`gruvbox-slick.omp.json`)
-- ⚡ Fast directory navigation with Zoxide
-- 💄 Colorful file icons with Terminal-Icons
-- 🖼️ System info display with Fastfetch (custom Gruvbox config)
-- 💎 Advanced WezTerm configuration with GPU acceleration and custom styling
-- 🌈 Nerd Font support for enhanced visuals
-
-## 
-<img width="1919" height="1079" alt="Screenshot 2025-12-03 173037" src="https://github.com/user-attachments/assets/358e9e5b-9533-4459-b646-2e20686ca488" />
+-  Custom Gruvbox-style Oh My Posh theme (`gruvbox-slick.omp.json`)
+-  Fast directory navigation with Zoxide
+-  Colorful file icons with Terminal-Icons
+-  System info display with Fastfetch (custom Gruvbox config)
+-  Advanced WezTerm configuration with GPU acceleration and custom styling
+-  Nerd Font support for enhanced visuals
 
 ## What's Included
 
