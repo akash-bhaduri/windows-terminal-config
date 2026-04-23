@@ -1,46 +1,48 @@
-
-try {
-    # --- Oh-My-Posh Initialization ---
-    #oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\kushal.omp.json" | Invoke-Expression
+# --- oh-my-posh---
+if (Get-Command oh-my-posh -ErrorAction SilentlyContinue) {
     oh-my-posh init pwsh --config "$HOME\.config\oh-my-posh\gruvbox-slick.omp.json" | Invoke-Expression
-
-    # --- Chocolatey Profile Import ---
-    # Import the Chocolatey Profile that contains the necessary code to enable
-    # tab-completions to function for `choco`.
-    # Be aware that if you are missing these lines from your profile, tab completion for `choco` will not function.
-    $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
-    if (Test-Path($ChocolateyProfile)) {
-        Import-Module "$ChocolateyProfile"
-    }
-       
-    # --- Terminal-Icons Module ---
-    Import-Module -Name Terminal-Icons
-
-    Invoke-Expression (& { (zoxide init powershell | Out-String) })
-
-    $env:EDITOR = "nvim"
-    $env:VISUAL = "nvim"
-    
-    # --- Enable PowerShell Autosuggestions (Predictions) ---
-    # Make sure to run this command before enabling the prediction source.
-    # (Install-Module -Name PSReadLine -Force)
-
-    Set-PSReadLineOption -PredictionSource history
-
-    # Force Fastfetch to use YOUR config every time 
-    if (Get-Command fastfetch -ErrorAction SilentlyContinue) {
-        fastfetch -c "C:/Users/akash/.config/fastfetch/config.jsonc"
-    }
-
-}
-catch {
-    # This block will safely catch any errors from the commands above.
-    # It prevents the terminal from crashing and shows you the error message.
-    Write-Warning "An error occurred while loading the PowerShell profile."
-    # The $_ variable contains the actual error record.
-    Write-Warning $_.Exception.Message
 }
 
+# --- MODULES ---
+$ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
+if (Test-Path $ChocolateyProfile) { Import-Module $ChocolateyProfile }
+Import-Module Terminal-Icons
 
+# --- TOOLS ---
+if (Get-Command zoxide -ErrorAction SilentlyContinue) {
+    zoxide init powershell | Out-String | Invoke-Expression
+}
 
+# --- ENV ---
+$env:EDITOR = "nvim"
+$env:VISUAL = "nvim"
+
+# --- PSREADLINE ---
+Set-PSReadLineOption -PredictionSource History
+Set-PSReadLineOption -EditMode Vi
+Set-PSReadLineKeyHandler -Chord 'Enter' -ScriptBlock {
+    $line = $null
+    $cursor = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$line, [ref]$cursor)
+    [Microsoft.PowerShell.PSConsoleReadLine]::AcceptSuggestion()
+    $newLine = $null
+    [Microsoft.PowerShell.PSConsoleReadLine]::GetBufferState([ref]$newLine, [ref]$cursor)
+
+    if ($newLine -eq $line) {
+        # No suggestion was there, just run the command
+        [Microsoft.PowerShell.PSConsoleReadLine]::ValidateAndAcceptLine()
+    }
+    # Otherwise suggestion got accepted, press Enter again to run
+}
+# Set-PSReadLineKeyHandler -ViMode Insert -Chord 'j,k' -Function ViCommandMode
+Set-PSReadLineOption -ViModeIndicator Script -ViModeChangeHandler {
+    param([Microsoft.PowerShell.ViMode]$mode)
+    if ($mode -eq 'Command') { Write-Host -NoNewline "`e[2 q" }
+    else { Write-Host -NoNewline "`e[6 q" }
+}
+
+# --- FASTFETCH ---
+if (Get-Command fastfetch -ErrorAction SilentlyContinue) {
+    fastfetch -c "C:/Users/akash/.config/fastfetch/config.jsonc"
+}
 
